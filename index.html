@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北海 3 天出行手册 · 完整版</title>
+<style>
+  :root {
+    --bg:#f5f7fa; --card:#fff; --text:#1f2937; --muted:#6b7280;
+    --primary:#0ea5e9; --primary-dark:#0284c7; --teal:#0d9488;
+    --accent:#f59e0b; --good:#16a34a; --warn:#dc2626; --pink:#e11d48;
+    --border:#e5e7eb; --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; padding:24px 16px 60px; }
+  .wrap { max-width:960px; margin:0 auto; }
+
+  /* 顶部横幅 */
+  header.hero {
+    background:linear-gradient(135deg,#0ea5e9 0%,#0d9488 100%);
+    color:#fff; border-radius:18px; padding:32px 28px; margin-bottom:20px; box-shadow:var(--shadow);
+  }
+  .hero .badge { display:inline-block; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.35); padding:3px 12px; border-radius:999px; font-size:13px; margin-bottom:12px; }
+  .hero h1 { font-size:27px; font-weight:700; letter-spacing:.5px; }
+  .hero p { margin-top:6px; font-size:15px; opacity:.95; }
+  .hero .dates { margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+  .hero .dates span { background:rgba(255,255,255,.18); padding:5px 13px; border-radius:8px; font-size:13px; font-weight:600; }
+
+  /* 导航目录 */
+  nav.toc {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:16px 18px; margin-bottom:22px; box-shadow:var(--shadow);
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  nav.toc a {
+    text-decoration:none; color:var(--primary-dark); font-size:14px; font-weight:600;
+    background:#f0f9ff; border:1px solid #bae6fd; padding:7px 14px; border-radius:999px;
+    transition:.15s;
+  }
+  nav.toc a:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  section.block { margin-bottom:8px; }
+  .section-title { font-size:20px; font-weight:700; margin:34px 0 14px; display:flex; align-items:center; gap:8px; scroll-margin-top:16px; }
+  .section-title::before { content:""; width:6px; height:22px; background:var(--primary); border-radius:3px; }
+  .section-title small { font-weight:400; font-size:13px; color:var(--muted); }
+  .section-title.pink::before { background:var(--pink); }
+  .section-title.green::before { background:var(--good); }
+  .section-title.orange::before { background:var(--accent); }
+
+  /* 行程时间线 */
+  .timeline { position:relative; padding-left:28px; }
+  .timeline::before { content:""; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:var(--border); }
+  .day { position:relative; margin-bottom:16px; }
+  .day::before { content:""; position:absolute; left:-24px; top:6px; width:14px; height:14px; border-radius:50%; background:var(--primary); border:3px solid #fff; box-shadow:0 0 0 2px var(--primary); }
+  .day.green::before { background:var(--good); box-shadow:0 0 0 2px var(--good); }
+  .day.orange::before { background:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+  .day .head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .day .head h3 { font-size:17px; font-weight:700; }
+  .day .date { font-size:13px; color:var(--muted); font-weight:600; }
+  .day .card-inner { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .day ul { list-style:none; }
+  .day ul li { font-size:14px; padding:5px 0; border-bottom:1px dashed #f0f0f0; display:flex; gap:8px; }
+  .day ul li:last-child { border-bottom:none; }
+  .day ul li .t { color:var(--primary-dark); font-weight:700; min-width:62px; flex-shrink:0; }
+  .day .tip { margin-top:8px; font-size:13px; color:var(--muted); background:#f0f9ff; border-radius:8px; padding:8px 12px; }
+
+  /* 卡片网格 */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:8px; }
+  .card .tag-row { display:flex; gap:6px; flex-wrap:wrap; }
+  .card h3 { font-size:16px; font-weight:700; }
+  .card .cat { font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+  .card .info { font-size:13px; color:var(--muted); }
+  .card .food { font-size:13px; color:var(--text); }
+  .card .food b { color:var(--warn); }
+  .card .price { font-size:18px; font-weight:800; color:var(--warn); }
+  .card .price small { font-size:12px; font-weight:400; color:var(--muted); }
+  .card .note { font-size:12px; color:#b45309; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:7px 10px; margin-top:auto; }
+
+  .tag { display:inline-block; font-size:11px; padding:2px 9px; border-radius:999px; font-weight:600; white-space:nowrap; }
+  .tag.cat { background:#e0f2fe; color:#0369a1; }
+  .tag.score { background:#dcfce7; color:#15803d; }
+  .tag.price { background:#fef3c7; color:#b45309; }
+  .tag.spot { background:#fce7f3; color:#be185d; }
+
+  .btn {
+    display:inline-block; margin-top:auto; text-align:center; text-decoration:none;
+    background:var(--primary); color:#fff; font-weight:700; font-size:13px;
+    padding:9px 14px; border-radius:8px; transition:.15s;
+  }
+  .btn:hover { background:var(--primary-dark); }
+  .btn.ghost { background:#fff; color:var(--primary-dark); border:1.5px solid var(--primary); }
+  .btn.ghost:hover { background:#f0f9ff; }
+  .btn.meituan { background:#ffc300; color:#2d2a26; }
+  .btn.meituan:hover { background:#f0b400; }
+  .btn.xhs { background:var(--pink); }
+  .btn.xhs:hover { background:#c01540; }
+
+  .notice { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:12px; padding:14px 18px; font-size:13px; margin-bottom:20px; }
+  .notice strong { color:#b45309; }
+  .footer-note { margin-top:26px; background:#f1f5f9; border-radius:12px; padding:16px 18px; font-size:13px; color:var(--muted); }
+  .footer-note strong { color:var(--text); }
+  .legend { font-size:12px; color:var(--muted); margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">🏝️ 北海 3 天 2 夜 · 出行手册（完整版）</span>
+    <h1>长沙 → 北海 · 海边度假全攻略</h1>
+    <p>错峰平季 · 人少价优 · 三天两夜人均约 1000–2500 元</p>
+    <div class="dates">
+      <span>📅 10 月 12 日（周一）出发</span>
+      <span>📅 10 月 14 日（周三）返程</span>
+      <span>🏨 银滩 2 晚</span>
+      <span>🚢 可选涠洲岛 1 日</span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#itinerary">🗓️ 行程安排</a>
+    <a href="#flight">✈️ 机票</a>
+    <a href="#hotel">🏨 酒店</a>
+    <a href="#food">🍽️ 餐厅</a>
+    <a href="#spot">📸 打卡点</a>
+    <a href="#budget">💰 预算</a>
+  </nav>
+
+  <div class="notice">
+    <strong>⚠️ 重要提示：</strong>① 机票/酒店/船票为 <strong>2026-10-10 实时查询价</strong>，会随时浮动，下单以平台实时价为准；② 直飞首选南航白天航班（更稳），湖南航空 A67627 夜航取消率 13% 需谨慎；③ 涠洲岛船票 + 上岛门票需提前 3–5 天在「来游吧」公众号预订；④ 天气不好时银滩会变灰泥滩，出发前查好晴天。
+  </div>
+
+  <!-- ============ 行程 ============ -->
+  <section class="block" id="itinerary">
+    <div class="section-title green">🗓️ 3 天行程安排 <small>（节奏轻松，可自由调换）</small></div>
+    <div class="timeline">
+      <div class="day">
+        <div class="head"><h3>Day 1 · 抵达 + 银滩日落</h3><span class="date">10 月 12 日 周一</span></div>
+        <div class="card-inner">
+          <ul>
+            <li><span class="t">上午/中午</span> 高铁 G539 或飞机出发（推荐南航 CZ2723 白天直飞 14:10→15:55，落地即玩）</li>
+            <li><span class="t">下午</span> 入住银滩附近酒店，放下行李</li>
+            <li><span class="t">傍晚</span> 银滩散步 + 看日落（北海日落约 18:00，免费）</li>
+            <li><span class="t">晚上</span> 侨港风情街吃海鲜（虾饼、糖水、生蚝，人均 80–150 元）</li>
+          </ul>
+          <div class="tip">💡 若选高铁（G539 约 06:47 发车、13:53 到），下午即可到银滩；选飞机下午落地，时间更从容。</div>
+        </div>
+      </div>
+      <div class="day green">
+        <div class="head"><h3>Day 2 · 涠洲岛一日游（或市区深度游）</h3><span class="date">10 月 13 日 周二</span></div>
+        <div class="card-inner">
+          <ul>
+            <li><span class="t">方案 A</span> <b>涠洲岛</b>：早班船约 1.5h，火山地质公园 + 滴水丹屏 + 五彩滩，租电瓶车环岛（约 60 元/天）</li>
+            <li><span class="t">方案 B</span> <b>市区线</b>：银滩戏水 → 北海老街（免费）→ 金海湾红树林 → 海底世界</li>
+            <li><span class="t">晚上</span> 返回市区，继续侨港夜市或银滩夜游</li>
+          </ul>
+          <div class="tip">⚠️ 涠洲岛船票单程约 150–240 元 + 上岛门票 98 元，需提前 3–5 天在「来游吧」公众号预订；若不想折腾，方案 B 更轻松。</div>
+        </div>
+      </div>
+      <div class="day orange">
+        <div class="head"><h3>Day 3 · 慢节奏 + 返程</h3><span class="date">10 月 14 日 周三</span></div>
+        <div class="card-inner">
+          <ul>
+            <li><span class="t">上午</span> 睡到自然醒，海边散步 / 赶海挖螺抓蟹</li>
+            <li><span class="t">中午</span> 侨港风情街午餐（皮皮虾、蟹仔粉）</li>
+            <li><span class="t">下午</span> 前往机场/高铁站返程长沙</li>
+          </ul>
+          <div class="tip">💡 返程高铁可下午出发，晚上到长沙；飞机可选下午班次，当天到家。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 机票 ============ -->
+  <section class="block" id="flight">
+    <div class="section-title">✈️ 机票预订 <small>（长沙 CSX → 北海 BHY，10 月 12 日）</small></div>
+    <div class="grid">
+      <div class="card">
+        <span class="cat">直飞 · 推荐</span>
+        <h3>南航 CZ2723 白天直飞</h3>
+        <div class="info">14:10 黄花机场 T2 → 15:55 福成机场<br>飞行约 1h45m，准点率高、取消率低</div>
+        <div class="price">约 ¥580<small> 起（含税）</small></div>
+        <a class="btn" href="https://m.ctrip.com/html5/flight/pages/first?from=outer&dcity=CSX&allianceid=6032594&ddate=2026-10-12&dcityName=%E9%95%BF%E6%B2%99&regionType=DOMESTIC&acityName=%E5%8C%97%E6%B5%B7&acity=BHY&sid=170732535" target="_blank">携程查票预订 →</a>
+        <a class="btn ghost" href="https://m.ly.com/ft/touch/book1?fromCode=CSX&toCode=BHY&fromCity=%E9%95%BF%E6%B2%99&toCity=%E5%8C%97%E6%B5%B7&date=2026-10-12&&refid=2000411782&plancode=518" target="_blank">同程比价 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">直飞 · 低价</span>
+        <h3>湖南航空 A67627 夜航</h3>
+        <div class="info">19:55 黄花机场 T2 → 22:05 福成机场<br>飞行约 2h10m，最便宜</div>
+        <div class="price">约 ¥436<small> 起（含税）</small></div>
+        <div class="note">⚠️ 取消率 13%，需买退改保险；落地较晚，需提前约接机/打车进市区（约 40 元）。</div>
+        <a class="btn" href="https://m.ly.com/ft/touch/book1?fromCode=CSX&toCode=BHY&fromCity=%E9%95%BF%E6%B2%99&toCity=%E5%8C%97%E6%B5%B7&date=2026-10-12&&refid=2000411782&plancode=518" target="_blank">同程查票 →</a>
+        <a class="btn ghost" href="https://m.ctrip.com/html5/flight/pages/first?from=outer&dcity=CSX&allianceid=6032594&ddate=2026-10-12&dcityName=%E9%95%BF%E6%B2%99&regionType=DOMESTIC&acityName=%E5%8C%97%E6%B5%B7&acity=BHY&sid=170732535" target="_blank">携程比价 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">高铁 · 性价比</span>
+        <h3>G539 长沙南 → 北海</h3>
+        <div class="info">约 06:47 发车 → 13:53 到<br>约 7h，准点率 99%，班次少需抢票</div>
+        <div class="price">¥289.5<small> 起（二等座）</small></div>
+        <a class="btn" href="https://www.12306.cn/index/" target="_blank">12306 官方订票 →</a>
+        <a class="btn ghost" href="https://train.qunar.com/train/tickets/changsha-to-beihai" target="_blank">去哪儿比价 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 酒店 ============ -->
+  <section class="block" id="hotel">
+    <div class="section-title">🏨 酒店预订 <small>（银滩片区 · 10 月 12–14 日）</small></div>
+    <div class="grid">
+      <div class="card">
+        <span class="cat">高端 · 5 星</span>
+        <h3>北海银滩皇冠假日酒店</h3>
+        <div class="info">评分 4.7 · 银滩四号路 8 号 · 步行 1 分钟到沙滩<br>亲子乐园 + 全屋智能，亲子度假首选</div>
+        <div class="price">¥564<small> 起/晚</small></div>
+        <a class="btn" href="https://m.ctrip.com/webapp/hotels/detail?atime=20261012&days=2&hotelid=128017886&allianceId=6032594&sid=170731121" target="_blank">携程预订 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">高端 · 5 星</span>
+        <h3>北海银滩碧园开元名都度假村</h3>
+        <div class="info">评分 4.8 · 银滩三号路 106 号<br>银滩正门一线海景，北海亲子酒店榜 No.1</div>
+        <div class="price">¥758<small> 起/晚</small></div>
+        <a class="btn" href="https://m.ctrip.com/webapp/hotels/detail?atime=20261012&days=2&hotelid=128017886&allianceId=6032594&sid=170731121" target="_blank">携程预订 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">中端 · 口碑王</span>
+        <h3>桔子水晶酒店（银滩侨港店）</h3>
+        <div class="info">评分 4.9 · 华住旗下 · 步行 5 分钟到银滩<br>靠近侨港风情街，吃海鲜逛夜市零压力</div>
+        <div class="price">¥301<small> 起/晚</small></div>
+        <a class="btn" href="https://www.meituan.com/s/hotel?cityId=292&query=%E5%8C%97%E6%B5%B7%20%E6%A1%94%E5%AD%90%E6%B0%B4%E6%99%B6" target="_blank">美团预订 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">经济 · 高性价比</span>
+        <h3>西辰·Sea 海边度假酒店</h3>
+        <div class="info">评分 5.0 · 银滩镇西边村<br>舒适型，干净清新，口碑极佳</div>
+        <div class="price">约 ¥250<small> 起/晚</small></div>
+        <a class="btn" href="https://www.meituan.com/s/hotel?cityId=292&query=%E5%8C%97%E6%B5%B7%E9%93%B6%E6%BB%A9" target="_blank">美团预订 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">涠洲岛 · 民宿</span>
+        <h3>涠洲岛方舟 Ark 海景民宿</h3>
+        <div class="info">评分 4.6 · 五彩滩店 · 宠物友好<br>推门见海，适合 Day 2 若住岛上</div>
+        <div class="price">¥269<small> 起/晚</small></div>
+        <a class="btn" href="https://m.ctrip.com/webapp/hotels/detail?atime=20261013&days=1&allianceId=6032594&sid=170731121" target="_blank">携程预订 →</a>
+      </div>
+      <div class="card">
+        <span class="cat">涠洲岛 · 船票</span>
+        <h3>涠洲岛船票 + 上岛门票</h3>
+        <div class="info">国际客运港 → 西角码头，船程 80–120 分钟<br>船票 150–240 元 + 门票 98 元</div>
+        <div class="note">⚠️ 需提前 3–5 天在「来游吧」微信公众号预订，暑期/假日易售罄。</div>
+        <a class="btn" href="https://mp.weixin.qq.com/" target="_blank">搜「来游吧」公众号预订 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 餐厅 ============ -->
+  <section class="block" id="food">
+    <div class="section-title orange">🍽️ 高分餐厅推荐 <small>（银滩 / 侨港 / 老街 / 涠洲岛）</small></div>
+    <div class="grid">
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">海鲜 · 侨港</span><span class="tag score">必吃榜 No.1</span></div>
+        <h3>越乡小厨（侨港店）</h3>
+        <div class="info">凤凰网推荐 · 诚信经营商户 · 307+ 好评</div>
+        <div class="food">省心海鲜套餐，海鲜粉/糖水/越南小吃一应俱全；<b>人均 80–120 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E8%B6%8A%E4%B9%A1%E5%B0%8F%E5%8E%A8%20%E5%83%9F%E6%B8%AF" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">海鲜 · 侨港</span><span class="tag score">信任标杆</span></div>
+        <h3>不七客海鲜（侨港黑金冠店）</h3>
+        <div class="info">"七条公约"承诺不宰客 · 前店后池鲜活直供</div>
+        <div class="food">椒盐皮皮虾（只只带膏）+ 现熬海鲜粥；<b>人均 100–150 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E4%B8%8D%E4%B8%83%E5%AE%A2%E6%B5%B7%E9%B2%9C" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">海鲜 · 老街</span><span class="tag score">4.5+</span></div>
+        <h3>汪姐海鲜（北海百年老街店）</h3>
+        <div class="info">现选现捞 · 413+ 好评 · 老街对面</div>
+        <div class="food">香辣蟹、清蒸石斑鱼、蒜蓉扇贝；<b>人均约 100 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E6%B1%AA%E5%A7%90%E6%B5%B7%E9%B2%9C%20%E8%80%81%E8%A1%97" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">广西菜 · 银滩</span><span class="tag score">本地私藏</span></div>
+        <h3>杜记海鸭煲</h3>
+        <div class="info">北部湾红树林海鸭 · 明码标价不宰客</div>
+        <div class="food">一锅三吃：先喝汤→再吃鸭→最后涮海虾扇贝；<b>80–120 元/锅</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E6%9D%9C%E8%AE%B0%E6%B5%B7%E9%B8%AD%E7%85%B2" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">火锅 · 侨港</span><span class="tag score">特色</span></div>
+        <h3>琼大糟粕醋·嫲嫲椰子鸡</h3>
+        <div class="info">百年传统糟粕醋锅底 · 南洋风情</div>
+        <div class="food">糟粕醋火锅、椰子鸡；<b>人均约 70–100 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E7%90%BC%E5%A4%A7%E7%B3%9F%E7%B2%95%E9%86%8B" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">小吃 · 老街/侨港</span><span class="tag score">老字号</span></div>
+        <h3>信记虾饼 / 李姨虾饼</h3>
+        <div class="info">李姨上过《舌尖上的中国》 · 常大排长龙</div>
+        <div class="food">整只鲜虾嵌入面糊现炸；<b>5–8 元/个</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E8%99%BE%E9%A5%BC%20%E5%8C%97%E6%B5%B7%E8%80%81%E8%A1%97" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">粉类 · 侨港</span><span class="tag score">早餐必吃</span></div>
+        <h3>周记蟹仔粉 / 妈仔卷粉</h3>
+        <div class="info">广西文旅厅推荐海鲜粉 · 本地人早餐首选</div>
+        <div class="food">蟹仔粉 15 元/碗，妈仔卷粉 5 元/份；<b>人均 5–20 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E5%83%9F%E6%B8%AF%20%E8%9F%B9%E4%94%97%E7%B2%89" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">糖水 · 侨港</span><span class="tag score">解暑</span></div>
+        <h3>24栋糖水 / 荣记糖水</h3>
+        <div class="info">侨港糖水大本营 · 有间冰室芒果炒冰</div>
+        <div class="food">板栗桂圆 5 元、清补凉 6 元、芒果炒冰；<b>人均 6–15 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E5%83%9F%E6%B8%AF%20%E7%B3%96%E6%B0%B4" target="_blank">美团搜索 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag cat">涠洲岛 · 甜品</span><span class="tag score">网红</span></div>
+        <h3>明天见芒果公司（涠洲岛）</h3>
+        <div class="info">岛上网红甜品店 · 芒果冰品</div>
+        <div class="food">芒果冰沙，烈日下解暑必备；<b>人均约 25 元</b></div>
+        <a class="btn meituan" href="https://www.meituan.com/s/restaurant?cityId=292&query=%E6%98%8E%E5%A4%A9%E8%A7%81%E8%8A%92%E6%9E%9C%E5%85%AC%E5%8F%B8" target="_blank">美团搜索 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 打卡点 ============ -->
+  <section class="block" id="spot">
+    <div class="section-title pink">📸 小红书网红打卡点 <small>（按出片热度排序）</small></div>
+    <div class="grid">
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">日落机位</span></div>
+        <h3>银滩「橘子海」日落</h3>
+        <div class="info">天下第一滩 · 沙白如粉 · 傍晚海面染成橘子色</div>
+        <div class="food">潮雕广场 / 罗马广场是热门拍照机位；导航"逐浪区"找人少海滩</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E5%8C%97%E6%B5%B7%E9%93%B6%E6%BB%A9%E6%97%A5%E8%90%BD" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">山海大片</span></div>
+        <h3>冠头岭 · 海枯石烂</h3>
+        <div class="info">北海唯一临海山体 · 灯塔 + 礁石 + 网红石刻</div>
+        <div class="food">日落礁石镀金边，人少好拍氛围感山海大片</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E5%86%A0%E5%A4%B4%E5%B2%AD" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">民国风</span></div>
+        <h3>北海老街（珠海路）</h3>
+        <div class="info">1883 年骑楼老街 · 4.8 分免费 · 中西合璧南洋风</div>
+        <div class="food">斑驳墙面 + 雕花窗棂，随手一拍就是民国大片；下午 5 点前店铺较多</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E5%8C%97%E6%B5%B7%E8%80%81%E8%A1%97" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">火山奇观</span></div>
+        <h3>涠洲岛 · 鳄鱼山火山公园</h3>
+        <div class="info">中国最年轻火山岛 · 黑色火山岩峭壁直面大海</div>
+        <div class="food">海蚀洞/海蚀崖，火山岩与海浪碰撞出片率极高</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E6%B6%A0%E6%B4%B2%E5%B2%9B%E9%B3%84%E9%B1%BC%E5%B1%B1" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">日出机位</span></div>
+        <h3>涠洲岛 · 五彩滩日出</h3>
+        <div class="info">国内罕见海蚀崖 · 清晨朝阳铺满滩涂</div>
+        <div class="food">退潮后彩色火山岩裸露，日出霞光极美，需早起</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E6%B6%A0%E6%B4%B2%E5%B2%9B%E4%BA%94%E5%BD%A9%E6%BB%A9" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">日落机位</span></div>
+        <h3>涠洲岛 · 滴水丹屏</h3>
+        <div class="info">岩壁常年渗水如珠帘 · 日落最佳</div>
+        <div class="food">傍晚海面变幻粉紫、橘红多色，日落大片首选</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E6%B6%A0%E6%B4%B2%E5%B2%9B%E6%BB%B4%E6%B0%B4%E4%B8%B9%E5%B1%8F" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">哥特建筑</span></div>
+        <h3>涠洲岛 · 盛塘天主教堂</h3>
+        <div class="info">珊瑚石垒砌的百年哥特式教堂</div>
+        <div class="food">法式建筑安静古朴，热门拍照点</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E6%B6%A0%E6%B4%B2%E5%B2%9B%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82" target="_blank">小红书搜攻略 →</a>
+      </div>
+      <div class="card">
+        <div class="tag-row"><span class="tag spot">新晋热门</span></div>
+        <h3>鲸喜平花海 / 流下村公路牌</h3>
+        <div class="info">近期社媒热门新晋出片点</div>
+        <div class="food">花海 + 公路牌，适合文艺照</div>
+        <a class="btn xhs" href="https://www.xiaohongshu.com/search_result?keyword=%E5%8C%97%E6%B5%B7%20%E9%B2%B8%E5%96%9C%E5%B9%B3%E8%8A%B1%E6%B5%B7" target="_blank">小红书搜攻略 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 预算 ============ -->
+  <section class="block" id="budget">
+    <div class="footer-note">
+      <strong>💰 预算参考（人均）：</strong><br>
+      · 交通：高铁往返约 580 元 / 飞机往返约 900–1160 元<br>
+      · 住宿：银滩 2 晚约 300–1500 元（丰俭由人）<br>
+      · 餐饮 + 门票：约 300–500 元<br>
+      <strong>总预算：人均 1000–2500 元</strong>（看是否上涠洲岛、选何种住宿）
+    </div>
+    <div class="legend">
+      * 票价/房价/餐厅评分/打卡点为 2026-10-10 实时查询参考，来源携程、同程、美团、去哪儿、12306、大众点评、小红书及广西文旅厅；实际以平台下单时为准。预订链接均为官方或主流 OTA 平台入口。
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
